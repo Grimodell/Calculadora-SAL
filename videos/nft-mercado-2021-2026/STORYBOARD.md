@@ -12,7 +12,7 @@ mode: collaborative
 - scene: "NFT: del boom al ajuste" + "Volumen de ventas 2021–2026"
 - duration: 4s
 - transition_in: cut
-- status: built
+- status: animated
 - src: compositions/frames/01-titulo.html
 - blueprint: titlecard-reveal
 
@@ -23,7 +23,7 @@ Apertura limpia: título grande, subtítulo con el período y la métrica. Un ú
 - scene: Barras por año 2021→2026* que crecen con contador; pico 2022 marcado; remate "−74 % desde el pico"
 - duration: 10s
 - transition_in: crossfade
-- status: built
+- status: animated
 - src: compositions/frames/02-global.html
 - blueprint: dataviz-countup
 
@@ -35,7 +35,7 @@ Flechas ▲/▼ con % interanual sobre cada barra. Remate: −74 % (2025 vs 2022
 - scene: 4 tarjetas con flecha de suba/baja: Arte, PFP, Deportes, Gaming
 - duration: 8s
 - transition_in: crossfade
-- status: built
+- status: animated
 - src: compositions/frames/03-rubros.html
 - blueprint: grid-card-assemble
 
@@ -50,7 +50,7 @@ Fuente: DappRadar.
 - scene: Barras horizontales de cuota: Norteamérica 34,3 %, Asia-Pacífico 24,8 %, China 6,5 %
 - duration: 6s
 - transition_in: crossfade
-- status: built
+- status: animated
 - src: compositions/frames/04-regiones.html
 - blueprint: dataviz-countup
 
@@ -62,7 +62,7 @@ Nota al pie: "Estimaciones de consultoras; metodología distinta al volumen on-c
 - scene: "−74 % de volumen desde el pico de 2022 · precio promedio por venta: US$124 → US$96 (2024→2025)" + fuentes
 - duration: 3s
 - transition_in: crossfade
-- status: built
+- status: animated
 - src: compositions/frames/05-cierre.html
 - blueprint: titlecard-reveal
 

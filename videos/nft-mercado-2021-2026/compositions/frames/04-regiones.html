@@ -25,33 +25,46 @@
         .p4-pct { font-size: 40px; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
       </style>
 
-      <div id="root" data-composition-id="f04-regiones" data-width="1920" data-height="1080">
-        <div id="p4-head">
-          <div class="label">Por región</div>
-          <h2 id="p4-title"><b>Norteamérica</b> concentra un tercio del mercado</h2>
-          <div id="p4-sub">Cuota del mercado NFT mundial</div>
+      <div data-hf-id="hf-83ne" id="root" data-composition-id="f04-regiones" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-6l7u" id="p4-stage" style="position: absolute; inset: 0">
+        <div data-hf-id="hf-0yfg" id="p4-head">
+          <div data-hf-id="hf-c4id" class="label">Por región</div>
+          <h2 data-hf-id="hf-5eux" id="p4-title"><b data-hf-id="hf-xvmh">Norteamérica</b> concentra un tercio del mercado</h2>
+          <div data-hf-id="hf-eo2w" id="p4-sub">Cuota del mercado NFT mundial</div>
         </div>
 
-        <div id="p4-rows">
-          <div class="p4-row">
-            <div class="p4-label"><div class="p4-name" style="color:#1F5FA8">Norteamérica</div><div class="p4-meta">2024 · EE. UU.: US$7.380 M</div></div>
-            <div class="p4-bar"><span class="p4-fill" style="width: 686px; background: #1F5FA8"></span><span class="p4-pct" style="color:#1F5FA8">34,3 %</span></div>
+        <div data-hf-id="hf-bkn1" id="p4-rows">
+          <div data-hf-id="hf-d6wr" class="p4-row">
+            <div data-hf-id="hf-iiqx" class="p4-label"><div data-hf-id="hf-xxsz" class="p4-name" style="color:#1F5FA8">Norteamérica</div><div data-hf-id="hf-os0s" class="p4-meta">2024 · EE. UU.: US$7.380 M</div></div>
+            <div data-hf-id="hf-mxj0" class="p4-bar"><span data-hf-id="hf-wqpq" class="p4-fill" style="width: 686px; background: #1F5FA8"></span><span data-hf-id="hf-ubb5" class="p4-pct" style="color:#1F5FA8">34,3 %</span></div>
           </div>
-          <div class="p4-row">
-            <div class="p4-label"><div class="p4-name">Asia-Pacífico</div><div class="p4-meta">2023</div></div>
-            <div class="p4-bar"><span class="p4-fill" style="width: 496px; background: #C8CCD1"></span><span class="p4-pct" style="color:#6E6E6E">24,8 %</span></div>
+          <div data-hf-id="hf-gge3" class="p4-row">
+            <div data-hf-id="hf-d4rh" class="p4-label"><div data-hf-id="hf-nufp" class="p4-name">Asia-Pacífico</div><div data-hf-id="hf-f2kv" class="p4-meta">2023</div></div>
+            <div data-hf-id="hf-4j3o" class="p4-bar"><span data-hf-id="hf-kfx4" class="p4-fill" style="width: 496px; background: #C8CCD1"></span><span data-hf-id="hf-1uox" class="p4-pct" style="color:#6E6E6E">24,8 %</span></div>
           </div>
-          <div class="p4-row">
-            <div class="p4-label"><div class="p4-name">China</div><div class="p4-meta">2023 · US$1.755 M</div></div>
-            <div class="p4-bar"><span class="p4-fill" style="width: 130px; background: #C8CCD1"></span><span class="p4-pct" style="color:#6E6E6E">6,5 %</span></div>
+          <div data-hf-id="hf-g232" class="p4-row">
+            <div data-hf-id="hf-ebok" class="p4-label"><div data-hf-id="hf-72pn" class="p4-name">China</div><div data-hf-id="hf-1rxn" class="p4-meta">2023 · US$1.755 M</div></div>
+            <div data-hf-id="hf-3c6l" class="p4-bar"><span data-hf-id="hf-nwk7" class="p4-fill" style="width: 130px; background: #C8CCD1"></span><span data-hf-id="hf-wucu" class="p4-pct" style="color:#6E6E6E">6,5 %</span></div>
           </div>
         </div>
 
-        <div class="source">Fuentes: Market.us (2024) y Grand View Research (2023). Estimaciones de consultoras, con otra metodología que el volumen on-chain.</div>
+        <div data-hf-id="hf-qm3i" class="source">Fuentes: Market.us (2024) y Grand View Research (2023). Estimaciones de consultoras, con otra metodología que el volumen on-chain.</div>
+        </div>
       </div>
 
       <script>
         const tl = gsap.timeline({ paused: true });
+        const S = (id) => document.getElementById(id);
+        const q = (sel) => Array.from(document.querySelectorAll(sel));
+        tl.fromTo(S("p4-head"), { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 0.2);
+        tl.fromTo(q("#p4-rows .p4-label"), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out", stagger: 0.12 }, 0.7);
+        q("#p4-rows .p4-row").forEach((row, i) => {
+          const at = 1.0 + i * 0.35;
+          tl.fromTo(row.querySelector(".p4-fill"), { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.out", transformOrigin: "left center" }, at);
+          tl.fromTo(row.querySelector(".p4-pct"), { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power1.out" }, at + 0.55);
+        });
+        tl.fromTo(document.querySelector("#p4-stage .source"), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power1.out" }, 2.6);
+        tl.to(document.getElementById("p4-stage"), { opacity: 0, duration: 0.35, ease: "power1.in" }, 5.6);
         window.__timelines["f04-regiones"] = tl;
       </script>
     </template>

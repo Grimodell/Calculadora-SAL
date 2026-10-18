@@ -18,18 +18,26 @@
         #c5-sources { position: absolute; left: 140px; right: 140px; bottom: 44px; font-size: 20px; color: #6E6E6E; }
       </style>
 
-      <div id="root" data-composition-id="f05-cierre" data-width="1920" data-height="1080">
-        <div id="c5-content">
-          <div class="label">En resumen</div>
-          <div id="c5-line">Se vende <b>74 % menos</b> que en el pico de 2022</div>
-          <div id="c5-rule"></div>
-          <div id="c5-price">Y cada NFT vale menos: el precio promedio por venta bajó de US$124 a <b>US$96</b> entre 2024 y 2025.</div>
+      <div data-hf-id="hf-7exd" id="root" data-composition-id="f05-cierre" data-width="1920" data-height="1080">
+        <div data-hf-id="hf-awk2" id="c5-stage" style="position: absolute; inset: 0">
+        <div data-hf-id="hf-fmyp" id="c5-content">
+          <div data-hf-id="hf-wjiq" class="label">En resumen</div>
+          <div data-hf-id="hf-n4ub" id="c5-line">Se vende <b data-hf-id="hf-r2g7">74 % menos</b> que en el pico de 2022</div>
+          <div data-hf-id="hf-yzw4" id="c5-rule"></div>
+          <div data-hf-id="hf-gij9" id="c5-price">Y cada NFT vale menos: el precio promedio por venta bajó de US$124 a <b data-hf-id="hf-w4kk">US$96</b> entre 2024 y 2025.</div>
         </div>
-        <div id="c5-sources">Fuentes: CryptoSlam · DappRadar · Market.us · Grand View Research</div>
+        <div data-hf-id="hf-xss2" id="c5-sources">Fuentes: CryptoSlam · DappRadar · Market.us · Grand View Research</div>
+        </div>
       </div>
 
       <script>
         const tl = gsap.timeline({ paused: true });
+        const S = (id) => document.getElementById(id);
+        tl.fromTo(document.querySelector("#c5-content .label"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.15);
+        tl.fromTo(S("c5-line"), { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0.3);
+        tl.fromTo(S("c5-rule"), { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.inOut", transformOrigin: "left center" }, 0.9);
+        tl.fromTo(S("c5-price"), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 1.1);
+        tl.fromTo(S("c5-sources"), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, 1.5);
         window.__timelines["f05-cierre"] = tl;
       </script>
     </template>
