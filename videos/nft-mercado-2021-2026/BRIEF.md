@@ -24,6 +24,7 @@ que tenga la información de la suba y la baja del precio del NFT en los último
 - Países: cuota por región de un año, marcada como estimación de consultora.
 
 - Sonido pedido por el usuario: "sonidos efectivos, modernos pero elegantes, del estilo de Designing with Sound (Amber Case, Aaron Day)". Sintetizado en audio-src/generate_sound.py: barras sonificadas (altura = valor), tonos suaves en los cambios de color, respiración en los cambios de escena, acorde final y colchón ambiental muy bajo.
+- Ajuste del usuario: "más suaves, más reverb con armónicos, sumar el estilo sobrio de Apple productos" → tonos de cristal con armónicos, ataque lento, reverb estéreo larga (3,4 s), sin soplidos en los cambios de escena, volumen más bajo.
 
 ## Notes
 

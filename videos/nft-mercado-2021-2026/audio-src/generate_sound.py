@@ -1,9 +1,11 @@
 """Sound design for "NFT: del boom al ajuste".
 
-Approach after Amber Case & Aaron Day, *Designing with Sound*: few sounds,
-short and soft, each one carrying information. Bars are sonified (pitch
-follows the value), so the rise and fall can be heard; colour changes get a
-gentle tone; scene changes get a quiet breath. Everything is synthesized and
+Approach after Amber Case & Aaron Day, *Designing with Sound* (few sounds,
+soft, each one carrying information), with the restraint of Apple product
+sounds: glassy sine tones with gentle harmonics, slow attacks, a long warm
+stereo reverb, and silence between events. Bars are sonified (pitch follows
+the value), so the rise and fall can be heard; colour changes get a soft
+tone; scene changes are left silent. Everything is synthesized and
 deterministic (seeded noise), so a re-run produces identical files.
 
 Usage: python3 audio-src/generate_sound.py   (writes assets/audio/*.wav)
@@ -34,30 +36,26 @@ def env(n, attack, tau):
     return a * np.exp(-t / tau)
 
 
-def pluck(freq, dur=0.9, tau=0.22, gain=1.0):
-    """Soft marimba-like pluck: fundamental plus a quiet 4x partial."""
+# (ratio, level, decay factor) — harmonic partials plus one faint glassy overtone
+PARTIALS = [(1.0, 1.0, 1.0), (2.0, 0.28, 0.6), (3.0, 0.12, 0.45), (4.16, 0.05, 0.3)]
+
+
+def pluck(freq, dur=1.8, tau=0.55, gain=1.0):
+    """Soft glass tone: harmonic partials, slow-ish attack, slightly detuned pair for width."""
     n = int(dur * SR)
     t = np.arange(n) / SR
-    tone = np.sin(2 * np.pi * freq * t) + 0.18 * np.sin(2 * np.pi * freq * 4 * t) * np.exp(-t / 0.05)
-    return gain * tone * env(n, 0.004, tau)
+    tone = np.zeros(n)
+    for ratio, level, decay in PARTIALS:
+        for detune in (1.0, 1.0009):
+            tone += level * np.sin(2 * np.pi * freq * ratio * detune * t) * np.exp(-t / (tau * decay))
+    return gain * 0.5 * tone * env(n, 0.018, 10.0)
 
 
-def bell(freqs, dur=2.2, tau=0.7, gain=1.0):
-    """Gentle chime: a few sine partials with a slow decay."""
+def bell(freqs, dur=3.2, tau=1.1, gain=1.0):
+    """Gentle chime: each note a soft glass tone, slower attack, long decay."""
     n = int(dur * SR)
-    t = np.arange(n) / SR
-    tone = sum(np.sin(2 * np.pi * f * t) * (0.8 ** i) for i, f in enumerate(freqs))
-    return gain * tone / len(freqs) * env(n, 0.012, tau)
-
-
-def breath(dur=0.5, gain=1.0):
-    """Quiet filtered-noise swell for scene changes."""
-    n = int(dur * SR)
-    noise = rng.standard_normal(n)
-    kernel = np.ones(220) / 220  # crude low-pass
-    soft = np.convolve(noise, kernel, mode="same")
-    shape = np.sin(np.pi * np.arange(n) / n) ** 2
-    return gain * soft * shape
+    tone = sum(pluck(f, dur=dur, tau=tau) * (0.85 ** i) for i, f in enumerate(freqs))
+    return gain * tone / len(freqs) * env(n, 0.03, 10.0)
 
 
 def place(track, sound, at):
@@ -66,20 +64,42 @@ def place(track, sound, at):
     track[i:j] += sound[: j - i]
 
 
-def reverb(x, seconds=1.4, wet=0.18):
+def lowpass(x, cutoff):
+    """One-pole low-pass."""
+    a = np.exp(-2 * np.pi * cutoff / SR)
+    y = np.empty_like(x)
+    acc = 0.0
+    for i, v in enumerate(x):
+        acc = (1 - a) * v + a * acc
+        y[i] = acc
+    return y
+
+
+def reverb(x, seconds=3.4, wet=0.42, predelay=0.03):
+    """Long, warm stereo reverb: decorrelated L/R noise tails, darker as they decay."""
     n = int(seconds * SR)
-    ir = rng.standard_normal(n) * np.exp(-np.arange(n) / SR / (seconds / 5))
-    ir /= np.sqrt(np.sum(ir ** 2))
-    size = 1 << int(np.ceil(np.log2(len(x) + n)))
-    y = np.fft.irfft(np.fft.rfft(x, size) * np.fft.rfft(ir, size), size)[: len(x)]
-    return (1 - wet) * x + wet * y
+    t = np.arange(n) / SR
+    size = 1 << int(np.ceil(np.log2(len(x) + n + int(predelay * SR))))
+    X = np.fft.rfft(x, size)
+    out = []
+    for _ in range(2):
+        noise = rng.standard_normal(n)
+        bright = noise * np.exp(-t / (seconds / 9))
+        dark = np.convolve(noise, np.ones(24) / 24, mode="same") * np.exp(-t / (seconds / 5))
+        ir = np.concatenate([np.zeros(int(predelay * SR)), bright * 0.35 + dark])
+        ir /= np.sqrt(np.sum(ir ** 2))
+        y = np.fft.irfft(X * np.fft.rfft(ir, size), size)[: len(x)]
+        out.append((1 - wet) * x + wet * y * 1.6)
+    return np.stack(out, axis=1)
 
 
-def write(path, mono, peak_db):
-    mono = mono / (np.max(np.abs(mono)) + 1e-9) * 10 ** (peak_db / 20)
+def write(path, audio, peak_db):
+    if audio.ndim == 1:
+        audio = np.repeat(audio[:, None], 2, axis=1)
+    audio = audio / (np.max(np.abs(audio)) + 1e-9) * 10 ** (peak_db / 20)
     fade = int(0.01 * SR)
-    mono[-fade:] *= np.linspace(1, 0, fade)
-    stereo = np.repeat((mono * 32767).astype(np.int16)[:, None], 2, axis=1)
+    audio[-fade:] *= np.linspace(1, 0, fade)[:, None]
+    stereo = (audio * 32767).astype(np.int16)
     with wave.open(path, "wb") as w:
         w.setnchannels(2)
         w.setsampwidth(2)
@@ -91,13 +111,12 @@ def build_sfx():
     x = np.zeros(int(LENGTH * SR))
 
     # 01 title (0–4s): opening chime, a tick for the rule
-    place(x, bell([392.00, 587.33, 783.99], gain=0.55), 0.4)
-    place(x, pluck(1046.5, dur=0.3, tau=0.05, gain=0.18), 1.1)
+    place(x, bell([392.00, 587.33, 783.99], gain=0.5), 0.4)
 
     # 02 global (4–14s): one pluck per bar, pitch = annual volume
     volumes = [18.3, 21.9, 8.7, 8.9, 5.6, 1.9]
     for i, v in enumerate(volumes):
-        place(x, pluck(pitch_for(v, 1.9, 21.9), gain=0.55), 4 + 1.1 + i * 0.4)
+        place(x, pluck(pitch_for(v, 1.9, 21.9), gain=0.4), 4 + 1.1 + i * 0.4)
     place(x, bell([523.25, 783.99], dur=1.4, tau=0.4, gain=0.35), 4 + 4.6)  # peak turns dark gray
     place(x, bell([293.66, 440.00], dur=1.4, tau=0.4, gain=0.38), 4 + 5.2)  # 2025 turns orange
     place(x, pluck(392.00, gain=0.45), 4 + 5.8)  # "−74 %": falling fifth
@@ -116,11 +135,8 @@ def build_sfx():
     # 05 close (28–31s): resolving chord
     place(x, bell([261.63, 392.00, 523.25, 587.33], dur=2.7, tau=0.9, gain=0.6), 28.3)
 
-    # scene changes: quiet breath
-    for at in (3.55, 13.55, 21.55, 27.55):
-        place(x, breath(gain=0.06), at)
-
-    return reverb(x)
+    # soften the top end, then the room
+    return reverb(lowpass(x, 4200))
 
 
 def build_pad():
@@ -135,6 +151,6 @@ def build_pad():
 
 if __name__ == "__main__":
     os.makedirs(OUT_DIR, exist_ok=True)
-    write(os.path.join(OUT_DIR, "sfx.wav"), build_sfx(), peak_db=-6)
-    write(os.path.join(OUT_DIR, "pad.wav"), build_pad(), peak_db=-26)
+    write(os.path.join(OUT_DIR, "sfx.wav"), build_sfx(), peak_db=-10)
+    write(os.path.join(OUT_DIR, "pad.wav"), build_pad(), peak_db=-30)
     print("wrote", os.path.abspath(OUT_DIR))
