@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; background: #0D1321; color: #F0EBD8; font-family: "IBM Plex Mono", monospace; overflow: hidden; }
+        .bg-dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(154,170,196,0.16) 1.5px, transparent 1.5px); background-size: 48px 48px; }
+        .glow { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; background: radial-gradient(circle, rgba(252,163,17,0.16), rgba(252,163,17,0) 65%); }
+        .ghost { position: absolute; font-family: "Oswald", sans-serif; font-weight: 700; color: rgba(240,235,216,0.04); line-height: 1; white-space: nowrap; }
+        .kicker { font-size: 26px; letter-spacing: 0.18em; text-transform: uppercase; color: #FCA311; font-weight: 700; }
+        .h { font-family: "Oswald", sans-serif; font-weight: 700; text-transform: uppercase; line-height: 1.02; letter-spacing: 0.01em; }
+        .up { color: #2EC4B6; } .down { color: #E5383B; }
+
+        #t1-glow { left: -260px; top: -240px; }
+        #t1-ghost { right: -40px; bottom: -90px; font-size: 520px; }
+        #t1-content { position: absolute; left: 120px; right: 120px; top: 0; bottom: 0; display: flex; flex-direction: column; justify-content: center; gap: 36px; }
+        #t1-title { font-size: 168px; max-width: 1500px; }
+        #t1-title .accent { color: #FCA311; }
+        #t1-rule { width: 160px; height: 6px; background: #FCA311; }
+        #t1-sub { font-size: 40px; color: #F0EBD8; }
+        #t1-sub .muted { color: #9AAAC4; }
+        #t1-legend { display: flex; gap: 48px; font-size: 28px; color: #9AAAC4; }
+        #t1-legend b { font-weight: 700; }
+      </style>
+
+      <div id="root" data-composition-id="f01-titulo" data-width="1920" data-height="1080">
+        <div class="bg-dots"></div>
+        <div class="glow" id="t1-glow"></div>
+        <div class="ghost" id="t1-ghost">2021–26</div>
+        <div id="t1-content">
+          <div class="kicker">Mercado NFT · 5 años</div>
+          <h1 class="h" id="t1-title">Del boom <span class="accent">al ajuste</span></h1>
+          <div id="t1-rule"></div>
+          <div id="t1-sub">Volumen de ventas 2021–2026 <span class="muted">· por año, rubro y región</span></div>
+          <div id="t1-legend"><span><b class="up">▲</b> suba</span><span><b class="down">▼</b> baja</span></div>
+        </div>
+      </div>
+
+      <script>
+        const tl = gsap.timeline({ paused: true });
+        window.__timelines["f01-titulo"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

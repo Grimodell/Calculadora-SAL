@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; background: #0D1321; color: #F0EBD8; font-family: "IBM Plex Mono", monospace; overflow: hidden; }
+        .bg-dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(154,170,196,0.16) 1.5px, transparent 1.5px); background-size: 48px 48px; }
+        .glow { position: absolute; width: 1200px; height: 1200px; border-radius: 50%; background: radial-gradient(circle, rgba(252,163,17,0.16), rgba(252,163,17,0) 65%); }
+        .kicker { font-size: 24px; letter-spacing: 0.18em; text-transform: uppercase; color: #FCA311; font-weight: 700; }
+        .h { font-family: "Oswald", sans-serif; font-weight: 700; text-transform: uppercase; line-height: 1.02; letter-spacing: 0.01em; }
+
+        #c5-glow { left: 360px; top: -160px; }
+        #c5-content { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; text-align: center; padding: 0 160px 80px; }
+        #c5-big { font-family: "Oswald", sans-serif; font-weight: 700; font-size: 260px; line-height: 0.95; color: #FCA311; font-variant-numeric: tabular-nums; }
+        #c5-line { font-size: 72px; max-width: 1500px; }
+        #c5-rule { width: 160px; height: 4px; background: rgba(154,170,196,0.5); }
+        #c5-price { font-size: 36px; color: #F0EBD8; }
+        #c5-price b { color: #E5383B; }
+        #c5-sources { position: absolute; left: 120px; right: 120px; bottom: 56px; text-align: center; font-size: 20px; color: #9AAAC4; }
+      </style>
+
+      <div id="root" data-composition-id="f05-cierre" data-width="1920" data-height="1080">
+        <div class="bg-dots"></div>
+        <div class="glow" id="c5-glow"></div>
+        <div id="c5-content">
+          <div class="kicker">En resumen</div>
+          <div id="c5-big">−74 %</div>
+          <div class="h" id="c5-line">de volumen desde el pico de 2022</div>
+          <div id="c5-rule"></div>
+          <div id="c5-price">Precio promedio por venta: US$124 → <b>US$96</b> (2024 → 2025)</div>
+        </div>
+        <div id="c5-sources">Fuentes: CryptoSlam · DappRadar · Market.us · Grand View Research</div>
+      </div>
+
+      <script>
+        const tl = gsap.timeline({ paused: true });
+        window.__timelines["f05-cierre"] = tl;
+      </script>
+    </template>
+  </body>
+</html>

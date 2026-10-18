@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <style>
+        #root { position: absolute; inset: 0; background: #0D1321; color: #F0EBD8; font-family: "IBM Plex Mono", monospace; overflow: hidden; }
+        .bg-dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(154,170,196,0.16) 1.5px, transparent 1.5px); background-size: 48px 48px; }
+        .glow { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; background: radial-gradient(circle, rgba(252,163,17,0.14), rgba(252,163,17,0) 65%); }
+        .source { position: absolute; left: 120px; bottom: 56px; font-size: 20px; color: #9AAAC4; letter-spacing: 0.02em; }
+        .kicker { font-size: 24px; letter-spacing: 0.18em; text-transform: uppercase; color: #FCA311; font-weight: 700; }
+        .h { font-family: "Oswald", sans-serif; font-weight: 700; text-transform: uppercase; line-height: 1.02; letter-spacing: 0.01em; }
+
+        #p4-glow { right: -300px; top: 120px; }
+        #p4-head { position: absolute; left: 120px; top: 88px; display: flex; flex-direction: column; gap: 14px; }
+        #p4-title { font-size: 84px; }
+        #p4-sub { font-size: 26px; color: #9AAAC4; }
+
+        #p4-rows { position: absolute; left: 120px; right: 120px; top: 360px; display: flex; flex-direction: column; gap: 56px; }
+        .p4-row { display: grid; grid-template-columns: 420px 1fr 300px; align-items: center; gap: 36px; }
+        .p4-label { display: flex; flex-direction: column; gap: 6px; }
+        .p4-name { font-family: "Oswald", sans-serif; font-weight: 700; font-size: 48px; text-transform: uppercase; line-height: 1; }
+        .p4-meta { font-size: 22px; color: #9AAAC4; }
+        .p4-track { position: relative; height: 56px; border-radius: 10px; background: rgba(154,170,196,0.12); }
+        .p4-fill { display: block; height: 100%; border-radius: 10px; }
+        .p4-pct { font-family: "Oswald", sans-serif; font-weight: 700; font-size: 76px; line-height: 1; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+      </style>
+
+      <div id="root" data-composition-id="f04-regiones" data-width="1920" data-height="1080">
+        <div class="bg-dots"></div>
+        <div class="glow" id="p4-glow"></div>
+
+        <div id="p4-head">
+          <div class="kicker">Por región</div>
+          <h2 class="h" id="p4-title">¿Dónde se mueve el mercado?</h2>
+          <div id="p4-sub">cuota del mercado NFT mundial</div>
+        </div>
+
+        <div id="p4-rows">
+          <div class="p4-row">
+            <div class="p4-label"><div class="p4-name">Norteamérica</div><div class="p4-meta">2024 · EE. UU.: US$7.380 M</div></div>
+            <div class="p4-track"><span class="p4-fill" style="width: 34.3%; background: #FCA311"></span></div>
+            <div class="p4-pct" style="color:#FCA311">34,3 %</div>
+          </div>
+          <div class="p4-row">
+            <div class="p4-label"><div class="p4-name">Asia-Pacífico</div><div class="p4-meta">2023</div></div>
+            <div class="p4-track"><span class="p4-fill" style="width: 24.8%; background: #748CAB"></span></div>
+            <div class="p4-pct">24,8 %</div>
+          </div>
+          <div class="p4-row">
+            <div class="p4-label"><div class="p4-name">China</div><div class="p4-meta">2023 · US$1.755 M</div></div>
+            <div class="p4-track"><span class="p4-fill" style="width: 6.5%; background: #748CAB"></span></div>
+            <div class="p4-pct">6,5 %</div>
+          </div>
+        </div>
+
+        <div class="source">Fuentes: Market.us (2024), Grand View Research (2023) · estimaciones de consultoras, metodología distinta al volumen on-chain</div>
+      </div>
+
+      <script>
+        const tl = gsap.timeline({ paused: true });
+        window.__timelines["f04-regiones"] = tl;
+      </script>
+    </template>
+  </body>
+</html>
