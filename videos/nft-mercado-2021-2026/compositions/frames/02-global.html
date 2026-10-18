@@ -6,91 +6,82 @@
   <body>
     <template>
       <style>
-        #root { position: absolute; inset: 0; background: #0D1321; color: #F0EBD8; font-family: "IBM Plex Mono", monospace; overflow: hidden; }
-        .bg-dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(154,170,196,0.16) 1.5px, transparent 1.5px); background-size: 48px 48px; }
-        .glow { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; background: radial-gradient(circle, rgba(252,163,17,0.16), rgba(252,163,17,0) 65%); }
-        .source { position: absolute; left: 120px; bottom: 40px; font-size: 20px; color: #9AAAC4; letter-spacing: 0.02em; }
-        .kicker { font-size: 24px; letter-spacing: 0.18em; text-transform: uppercase; color: #FCA311; font-weight: 700; }
-        .h { font-family: "Oswald", sans-serif; font-weight: 700; text-transform: uppercase; line-height: 1.02; letter-spacing: 0.01em; }
-        .up { color: #2EC4B6; } .down { color: #E5383B; }
+        #root { position: absolute; inset: 0; background: #FFFFFF; color: #262626; font-family: "Inter", sans-serif; overflow: hidden; }
+        .label { font-size: 22px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #6E6E6E; }
+        .source { position: absolute; left: 140px; bottom: 44px; font-size: 20px; color: #6E6E6E; }
+        .accent { color: #B84A0E; } .up { color: #1F5FA8; }
 
-        #g2-glow { left: 420px; top: 60px; }
-        #g2-head { position: absolute; left: 120px; top: 88px; display: flex; flex-direction: column; gap: 14px; }
-        #g2-title { font-size: 84px; }
-        #g2-unit { font-size: 26px; color: #9AAAC4; }
+        #g2-head { position: absolute; left: 140px; top: 80px; right: 140px; display: flex; flex-direction: column; gap: 14px; }
+        #g2-title { font-family: "EB Garamond", serif; font-weight: 400; font-size: 72px; line-height: 1.05; max-width: 1640px; }
+        #g2-title b { font-weight: 700; color: #B84A0E; }
+        #g2-unit { font-size: 26px; color: #6E6E6E; }
 
-        #g2-callout { position: absolute; right: 120px; top: 80px; width: 470px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right; }
-        #g2-big { font-family: "Oswald", sans-serif; font-weight: 700; font-size: 168px; line-height: 1; color: #E5383B; font-variant-numeric: tabular-nums; }
-        #g2-big-sub { font-size: 26px; color: #F0EBD8; }
+        #g2-chart { position: absolute; left: 140px; right: 140px; bottom: 150px; height: 560px; display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 2px solid #262626; }
+        .g2-col { position: relative; width: 200px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 10px; }
+        .g2-val { font-size: 44px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; color: #6E6E6E; }
+        .g2-bar { display: block; width: 136px; background: #C8CCD1; }
+        .g2-bar.peak { background: #8A9099; }
+        .g2-bar.focus { background: #B84A0E; }
+        .g2-bar.partial { background: repeating-linear-gradient(135deg, #C8CCD1 0 8px, #FFFFFF 8px 14px); border: 2px solid #C8CCD1; border-bottom: 0; }
+        .g2-year { position: absolute; bottom: -46px; font-size: 26px; color: #262626; font-variant-numeric: tabular-nums; }
+        .g2-delta { position: absolute; bottom: -80px; font-size: 20px; color: #6E6E6E; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
-        #g2-chart { position: absolute; left: 120px; right: 120px; bottom: 150px; height: 600px; display: flex; align-items: flex-end; justify-content: space-between; border-bottom: 2px solid rgba(154,170,196,0.35); }
-        .g2-col { width: 210px; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 12px; }
-        .g2-delta { font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
-        .g2-val { font-family: "Oswald", sans-serif; font-weight: 700; font-size: 52px; line-height: 1; font-variant-numeric: tabular-nums; }
-        .g2-bar { display: block; width: 150px; background: #3E5C76; border-radius: 6px 6px 0 0; }
-        .g2-bar.peak { background: #FCA311; }
-        .g2-bar.partial { background: repeating-linear-gradient(135deg, #3E5C76 0 10px, rgba(62,92,118,0.35) 10px 20px); }
-        .g2-year { position: absolute; bottom: -46px; font-size: 28px; color: #9AAAC4; }
-        .g2-col { position: relative; }
-        .g2-peak-tag { font-size: 22px; font-weight: 700; letter-spacing: 0.14em; color: #0D1321; background: #FCA311; padding: 4px 12px; border-radius: 4px; }
+        #g2-note { position: absolute; left: 1290px; top: 540px; width: 500px; display: flex; flex-direction: column; gap: 8px; }
+        #g2-note-big { font-family: "EB Garamond", serif; font-weight: 700; font-size: 96px; line-height: 1; color: #B84A0E; font-variant-numeric: tabular-nums; }
+        #g2-note-text { font-size: 26px; line-height: 1.35; color: #262626; }
       </style>
 
       <div id="root" data-composition-id="f02-global" data-width="1920" data-height="1080">
-        <div class="bg-dots"></div>
-        <div class="glow" id="g2-glow"></div>
-
         <div id="g2-head">
-          <div class="kicker">Evolución global</div>
-          <h2 class="h" id="g2-title">Volumen anual de ventas</h2>
-          <div id="g2-unit">miles de millones de USD</div>
+          <div class="label">Evolución global</div>
+          <h2 id="g2-title">Las ventas de NFT cayeron <b>74 %</b> desde el pico de 2022</h2>
+          <div id="g2-unit">Volumen anual de ventas, en miles de millones de USD</div>
         </div>
 
-        <div id="g2-callout">
-          <div id="g2-big">−74 %</div>
-          <div id="g2-big-sub">2025 vs. pico de 2022</div>
+        <div id="g2-note">
+          <div id="g2-note-big">−74 %</div>
+          <div id="g2-note-text">de 21,9 a 5,6 entre 2022 y 2025</div>
         </div>
 
         <div id="g2-chart">
           <div class="g2-col">
-            <div class="g2-delta up">boom</div>
             <div class="g2-val">18,3</div>
             <div class="g2-bar" style="height: 368px"></div>
             <div class="g2-year">2021</div>
           </div>
           <div class="g2-col">
-            <div class="g2-peak-tag">PICO</div>
-            <div class="g2-delta up">▲ +20 %</div>
-            <div class="g2-val">21,9</div>
+            <div class="g2-val" style="color:#262626">21,9</div>
             <div class="g2-bar peak" style="height: 440px"></div>
             <div class="g2-year">2022</div>
+            <div class="g2-delta up">▲ 20 %</div>
           </div>
           <div class="g2-col">
-            <div class="g2-delta down">▼ −60 %</div>
             <div class="g2-val">8,7</div>
             <div class="g2-bar" style="height: 175px"></div>
             <div class="g2-year">2023</div>
+            <div class="g2-delta accent">▼ 60 %</div>
           </div>
           <div class="g2-col">
-            <div class="g2-delta up">▲ +2 %</div>
             <div class="g2-val">8,9</div>
             <div class="g2-bar" style="height: 179px"></div>
             <div class="g2-year">2024</div>
+            <div class="g2-delta up">▲ 2 %</div>
           </div>
           <div class="g2-col">
-            <div class="g2-delta down">▼ −37 %</div>
-            <div class="g2-val">5,6</div>
-            <div class="g2-bar" style="height: 113px"></div>
+            <div class="g2-val accent">5,6</div>
+            <div class="g2-bar focus" style="height: 113px"></div>
             <div class="g2-year">2025</div>
+            <div class="g2-delta accent">▼ 37 %</div>
           </div>
           <div class="g2-col">
-            <div class="g2-delta" style="color:#9AAAC4">parcial</div>
             <div class="g2-val">1,9</div>
             <div class="g2-bar partial" style="height: 39px"></div>
             <div class="g2-year">2026*</div>
+            <div class="g2-delta">parcial</div>
           </div>
         </div>
 
-        <div class="source">Fuente: CryptoSlam · *2026 hasta el 22-sep</div>
+        <div class="source">Fuente: CryptoSlam · *2026 hasta el 22 de septiembre</div>
       </div>
 
       <script>

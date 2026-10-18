@@ -1,17 +1,18 @@
 # NFT: del boom al ajuste — design spec
 
-Concepto: un informe financiero nocturno. Cada número tiene una barra que le da peso; el color dice si sube o baja.
+Estilo: *Storytelling with Data* (Cole Nussbaumer Knaflic) + jerarquía tipográfica a la Ellen Lupton (*Thinking with Type*).
+
+## Principios
+- Fondo blanco. Todo en gris por defecto; el color solo marca el dato que cuenta la historia.
+- Títulos-acción: cada escena titula con su conclusión, no con el tema.
+- Rotulado directo junto a los datos; sin leyendas, sin grillas, sin ejes innecesarios, sin decoración.
+- Grilla suiza: todo alineado a la izquierda (margen 140px), bandera derecha, mucho aire.
 
 ## Paleta
-- bg `#0D1321` (fondo, todas las escenas) · panel `#1D2D44` · muted `#9AAAC4` · fg `#F0EBD8`
-- acento `#FCA311` (ámbar: pico, remates, cifra clave)
-- suba `#2EC4B6` (teal) · baja `#E5383B` (rojo)
+- fondo `#FFFFFF` · texto `#262626` · gris secundario `#6E6E6E` · gris barras `#C8CCD1` · gris oscuro `#8A9099`
+- acento (baja / foco de la historia) naranja `#B84A0E`
+- suba azul `#1F5FA8` (par azul/naranja apto daltonismo)
 
 ## Tipografía (embebidas)
-- Display / cifras: Oswald 700 (uppercase en títulos)
-- Datos, etiquetas, fuentes: IBM Plex Mono 400/700, `tabular-nums`
-
-## Composición
-- Márgenes 120px laterales, 96px arriba/abajo. Fuente siempre abajo a la izquierda, mono 20px muted.
-- Fondo: grilla fina de puntos (data), glow ámbar tenue detrás del foco, número fantasma del año al 4 %.
-- Sin pie charts, sin gridlines ni leyendas.
+- Titulares: EB Garamond 400/700 (serif clásica, títulos en minúscula de oración)
+- Datos, rótulos, fuentes: Inter 400/700, `tabular-nums`; rótulos de sección en versalitas espaciadas

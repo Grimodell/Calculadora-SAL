@@ -6,83 +6,73 @@
   <body>
     <template>
       <style>
-        #root { position: absolute; inset: 0; background: #0D1321; color: #F0EBD8; font-family: "IBM Plex Mono", monospace; overflow: hidden; }
-        .bg-dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(154,170,196,0.16) 1.5px, transparent 1.5px); background-size: 48px 48px; }
-        .glow { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; background: radial-gradient(circle, rgba(229,56,59,0.13), rgba(229,56,59,0) 65%); }
-        .source { position: absolute; left: 120px; bottom: 56px; font-size: 20px; color: #9AAAC4; letter-spacing: 0.02em; }
-        .kicker { font-size: 24px; letter-spacing: 0.18em; text-transform: uppercase; color: #FCA311; font-weight: 700; }
-        .h { font-family: "Oswald", sans-serif; font-weight: 700; text-transform: uppercase; line-height: 1.02; letter-spacing: 0.01em; }
-        .up { color: #2EC4B6; } .down { color: #E5383B; }
+        #root { position: absolute; inset: 0; background: #FFFFFF; color: #262626; font-family: "Inter", sans-serif; overflow: hidden; }
+        .label { font-size: 22px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #6E6E6E; }
+        .source { position: absolute; left: 140px; bottom: 44px; font-size: 20px; color: #6E6E6E; }
+        .accent { color: #B84A0E; } .up { color: #1F5FA8; }
 
-        #r3-glow { left: -200px; top: 200px; }
-        #r3-head { position: absolute; left: 120px; top: 88px; display: flex; flex-direction: column; gap: 14px; }
-        #r3-title { font-size: 84px; }
+        #r3-head { position: absolute; left: 140px; top: 80px; right: 140px; display: flex; flex-direction: column; gap: 14px; }
+        #r3-title { font-family: "EB Garamond", serif; font-weight: 400; font-size: 76px; line-height: 1.05; max-width: 1600px; }
+        #r3-title .a { font-weight: 700; color: #B84A0E; }
+        #r3-title .u { font-weight: 700; color: #1F5FA8; }
 
-        #r3-grid { position: absolute; left: 120px; right: 120px; top: 290px; bottom: 120px; display: grid; grid-template-columns: 1.15fr 1fr; grid-template-rows: 100%; gap: 32px; }
-        .r3-card { background: rgba(29,45,68,0.85); border: 1px solid rgba(154,170,196,0.18); border-radius: 18px; padding: 32px 40px; display: flex; flex-direction: column; justify-content: space-between; }
-        .r3-name { font-family: "Oswald", sans-serif; font-weight: 700; font-size: 44px; text-transform: uppercase; display: flex; align-items: center; gap: 18px; }
-        .r3-arrow { font-size: 38px; }
-        .r3-big { font-family: "Oswald", sans-serif; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
-        .r3-note { font-size: 24px; color: #9AAAC4; }
+        .r3-panel { position: absolute; top: 400px; display: flex; flex-direction: column; gap: 22px; }
+        .r3-sub { font-size: 28px; font-weight: 700; }
+        .r3-cap { font-size: 22px; color: #6E6E6E; }
 
-        #r3-art { gap: 20px; }
-        #r3-art-hero { font-size: 128px; }
-        #r3-art-flow { display: flex; align-items: flex-end; gap: 28px; }
-        #r3-art-from { display: flex; flex-direction: column; gap: 8px; }
-        #r3-art-from .r3-big { font-size: 60px; color: #F0EBD8; white-space: nowrap; }
-        #r3-art-to { font-size: 60px; white-space: nowrap; }
-        #r3-art-bars { display: flex; flex-direction: column; gap: 12px; }
-        .r3-track { position: relative; width: 100%; height: 26px; border-radius: 13px; background: rgba(154,170,196,0.12); }
-        .r3-fill { display: block; height: 100%; border-radius: 13px; }
+        #r3-art { left: 140px; width: 700px; }
+        .r3-hrow { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 20px; }
+        .r3-yr { font-size: 26px; color: #262626; font-variant-numeric: tabular-nums; }
+        .r3-hbar { display: flex; align-items: center; gap: 16px; }
+        .r3-hfill { display: block; height: 80px; }
+        .r3-hval { font-size: 32px; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
-        #r3-side { display: flex; flex-direction: column; gap: 24px; }
-        #r3-side .r3-card { flex: 1; min-height: 0; flex-direction: row; align-items: center; gap: 32px; padding: 24px 36px; }
-        #r3-side .r3-big { font-size: 80px; min-width: 260px; white-space: nowrap; }
-        .r3-side-text { display: flex; flex-direction: column; gap: 6px; }
-        .r3-side-text .r3-name { font-size: 38px; }
+        #r3-div { left: 1000px; width: 780px; }
+        .r3-drow { display: grid; grid-template-columns: 220px 1fr; align-items: center; gap: 20px; height: 100px; }
+        .r3-dname { font-size: 28px; text-align: right; }
+        .r3-dtrack { position: relative; height: 56px; }
+        .r3-axis { position: absolute; left: 90px; top: -14px; bottom: -14px; width: 2px; background: #262626; }
+        .r3-dfill { position: absolute; top: 0; height: 100%; }
+        .r3-dval { position: absolute; top: 50%; transform: translateY(-50%); font-size: 30px; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
       </style>
 
       <div id="root" data-composition-id="f03-rubros" data-width="1920" data-height="1080">
-        <div class="bg-dots"></div>
-        <div class="glow" id="r3-glow"></div>
-
         <div id="r3-head">
-          <div class="kicker">Por rubro</div>
-          <h2 class="h" id="r3-title">No todo cae igual</h2>
+          <div class="label">Por rubro</div>
+          <h2 id="r3-title">El arte digital <span class="a">se desplomó</span>; deportes y PFP <span class="u">repuntaron</span> en 2025</h2>
         </div>
 
-        <div id="r3-grid">
-          <div class="r3-card" id="r3-art">
-            <div class="r3-name"><span class="r3-arrow down">▼</span>Arte digital</div>
-            <div class="r3-big down" id="r3-art-hero">Colapso</div>
-            <div id="r3-art-flow">
-              <div id="r3-art-from"><div class="r3-note">2021</div><div class="r3-big">US$2.900 M</div></div>
-              <div class="r3-big down" id="r3-art-to">→ US$23,8 M</div>
-            </div>
-            <div id="r3-art-bars">
-              <div class="r3-track"><span class="r3-fill" style="width: 100%; background: #3E5C76"></span></div>
-              <div class="r3-track"><span class="r3-fill" style="width: 1.2%; min-width: 14px; background: #E5383B"></span></div>
-            </div>
-            <div class="r3-note">dato DappRadar, marzo de 2025</div>
+        <div class="r3-panel" id="r3-art">
+          <div class="r3-sub">Arte digital · volumen de ventas</div>
+          <div class="r3-hrow">
+            <div class="r3-yr">2021</div>
+            <div class="r3-hbar"><span class="r3-hfill" style="width: 420px; background: #C8CCD1"></span><span class="r3-hval">US$2.900 M</span></div>
           </div>
-
-          <div id="r3-side">
-            <div class="r3-card">
-              <div class="r3-big up">+337 %</div>
-              <div class="r3-side-text"><div class="r3-name"><span class="r3-arrow up">▲</span>Deportes</div><div class="r3-note">US$71,1 M · 3T 2025</div></div>
-            </div>
-            <div class="r3-card">
-              <div class="r3-big up">+187 %</div>
-              <div class="r3-side-text"><div class="r3-name"><span class="r3-arrow up">▲</span>PFP / avatares</div><div class="r3-note">US$544 M · 3T 2025</div></div>
-            </div>
-            <div class="r3-card">
-              <div class="r3-big down">−17 %</div>
-              <div class="r3-side-text"><div class="r3-name"><span class="r3-arrow down">▼</span>Gaming</div><div class="r3-note">único rubro en baja · 3T 2025</div></div>
-            </div>
+          <div class="r3-hrow">
+            <div class="r3-yr">2025</div>
+            <div class="r3-hbar"><span class="r3-hfill" style="width: 6px; background: #B84A0E"></span><span class="r3-hval accent">US$23,8 M</span></div>
           </div>
+          <div class="r3-cap">Dato de 2025 publicado por DappRadar en marzo</div>
         </div>
 
-        <div class="source">Fuente: DappRadar (PFP vía CryptoPotato) · variaciones trimestrales del 3T 2025</div>
+        <div class="r3-panel" id="r3-div">
+          <div class="r3-sub">Cambio trimestral del volumen · 3T 2025</div>
+          <div class="r3-drow">
+            <div class="r3-dname">Deportes</div>
+            <div class="r3-dtrack"><div class="r3-axis"></div><span class="r3-dfill" style="left: 92px; width: 400px; background: #1F5FA8"></span><span class="r3-dval up" style="left: 508px">+337 %</span></div>
+          </div>
+          <div class="r3-drow">
+            <div class="r3-dname">PFP / avatares</div>
+            <div class="r3-dtrack"><div class="r3-axis"></div><span class="r3-dfill" style="left: 92px; width: 222px; background: #1F5FA8"></span><span class="r3-dval up" style="left: 330px">+187 %</span></div>
+          </div>
+          <div class="r3-drow">
+            <div class="r3-dname">Gaming</div>
+            <div class="r3-dtrack"><div class="r3-axis"></div><span class="r3-dfill" style="left: 70px; width: 20px; background: #B84A0E"></span><span class="r3-dval accent" style="left: 106px">−17 %</span></div>
+          </div>
+          <div class="r3-cap">Gaming fue el único rubro en baja</div>
+        </div>
+
+        <div class="source">Fuente: DappRadar (PFP vía CryptoPotato)</div>
       </div>
 
       <script>
