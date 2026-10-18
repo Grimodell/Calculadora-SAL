@@ -26,6 +26,8 @@ que tenga la información de la suba y la baja del precio del NFT en los último
 - Sonido pedido por el usuario: "sonidos efectivos, modernos pero elegantes, del estilo de Designing with Sound (Amber Case, Aaron Day)". Sintetizado en audio-src/generate_sound.py: barras sonificadas (altura = valor), tonos suaves en los cambios de color, respiración en los cambios de escena, acorde final y colchón ambiental muy bajo.
 - Ajuste del usuario: "más suaves, más reverb con armónicos, sumar el estilo sobrio de Apple productos" → tonos de cristal con armónicos, ataque lento, reverb estéreo larga (3,4 s), sin soplidos en los cambios de escena, volumen más bajo.
 
+- Cambio del usuario: "cambiar sonido y usar sonidos de acá" (artifact Foley Sprite Tester). Banda sonora rehecha con los recortes del sprite (audio-src/build_from_sprite.py); sin colchón ambiental.
+
 ## Notes
 
 - Estilo pedido por el usuario: "un estilo como el Cole Nussbaumer Knaflic, tipografía del estilo de Ellen Lupton, fondo blanco" (ver design.md).
