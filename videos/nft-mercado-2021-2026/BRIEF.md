@@ -23,6 +23,8 @@ que tenga la información de la suba y la baja del precio del NFT en los último
 - Rubros: hitos verificados (no serie anual inventada).
 - Países: cuota por región de un año, marcada como estimación de consultora.
 
+- Sonido pedido por el usuario: "sonidos efectivos, modernos pero elegantes, del estilo de Designing with Sound (Amber Case, Aaron Day)". Sintetizado en audio-src/generate_sound.py: barras sonificadas (altura = valor), tonos suaves en los cambios de color, respiración en los cambios de escena, acorde final y colchón ambiental muy bajo.
+
 ## Notes
 
 - Estilo pedido por el usuario: "un estilo como el Cole Nussbaumer Knaflic, tipografía del estilo de Ellen Lupton, fondo blanco" (ver design.md).
