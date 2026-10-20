@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1080" />
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1080px; overflow: hidden; background: #F4EFE4; }
+      #root { width: 100%; height: 100%; position: relative; background: #F4EFE4; color: #1C1B19; font-family: "Inter", sans-serif; overflow: hidden; }
+
+      /* sound: a warm disc behind the name, arcs radiating from it */
+      #disc { position: absolute; left: 520px; top: 96px; width: 560px; height: 560px; border-radius: 50%; background: #F2B33D; }
+      #waves { position: absolute; left: 812px; top: 196px; width: 220px; height: 300px; }
+
+      .tag { font-size: 22px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
+      #top { position: absolute; left: 72px; right: 72px; top: 64px; display: flex; justify-content: space-between; align-items: center; }
+      #pill { color: #F4EFE4; background: #2443C7; padding: 10px 20px 9px; border-radius: 40px; }
+
+      #name { position: absolute; left: 60px; top: 150px; display: flex; flex-direction: column; }
+      #first { font-family: "EB Garamond", serif; font-style: italic; font-weight: 700; font-size: 330px; line-height: 0.82; color: #C8381F; letter-spacing: -0.02em; }
+      #last { font-family: "EB Garamond", serif; font-weight: 400; font-size: 200px; line-height: 0.9; letter-spacing: -0.015em; margin-left: 10px; }
+
+      #bottom { position: absolute; left: 72px; right: 72px; bottom: 72px; display: flex; flex-direction: column; gap: 18px; }
+      #rule { width: 120px; height: 6px; background: #1C1B19; }
+      #reel { font-size: 66px; font-weight: 900; line-height: 0.98; letter-spacing: -0.01em; text-transform: uppercase; }
+      #reel .amp { font-family: "EB Garamond", serif; font-style: italic; font-weight: 400; text-transform: none; color: #2443C7; }
+      #genre { font-family: "EB Garamond", serif; font-style: italic; font-size: 46px; line-height: 1.1; color: #1C1B19; }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="1"
+      data-width="1080"
+      data-height="1080"
+    >
+      <div id="art" class="clip" data-start="0" data-duration="1" data-track-index="0" style="position: absolute; inset: 0">
+        <div id="disc"></div>
+        <svg id="waves" viewBox="0 0 220 300" aria-hidden="true">
+          <g fill="none" stroke="#2443C7" stroke-width="16" stroke-linecap="round">
+            <path d="M 40 110 A 60 60 0 0 1 40 190" />
+            <path d="M 95 70 A 115 115 0 0 1 95 230" />
+            <path d="M 150 30 A 170 170 0 0 1 150 270" />
+          </g>
+        </svg>
+
+        <div id="top">
+          <div class="tag">Reel · Voz &amp; Canto</div>
+          <div class="tag" id="pill">Español</div>
+        </div>
+
+        <div id="name">
+          <div id="first">Loló</div>
+          <div id="last">Muñoz</div>
+        </div>
+
+        <div id="bottom">
+          <div id="rule"></div>
+          <div id="reel">Character Voice <span class="amp">&amp;</span> Singing Reel</div>
+          <div id="genre">Canciones infantiles y animación</div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
