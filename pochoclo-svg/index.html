@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pochoclo SVG</title>
+  <style>
+    :root {
+      --bg: #F5ECD7;
+      --card: #FFFDF5;
+      --border: #1A0D00;
+      --accent: #FCA311;
+      --accent2: #E76F51;
+      --text: #1A0D00;
+      --muted: #7A5C3A;
+      --tag-bg: #FCA311;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #1A0D00;
+        --card: #2A1800;
+        --border: #FCA311;
+        --accent: #FCA311;
+        --accent2: #E76F51;
+        --text: #FFF7D6;
+        --muted: #C49A5A;
+        --tag-bg: #3A1F00;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #1A0D00;
+      --card: #2A1800;
+      --border: #FCA311;
+      --accent: #FCA311;
+      --accent2: #E76F51;
+      --text: #FFF7D6;
+      --muted: #C49A5A;
+      --tag-bg: #3A1F00;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Arial Black', 'Arial Bold', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 32px 16px 16px;
+      text-align: center;
+      border-bottom: 3px solid var(--border);
+      background: var(--card);
+    }
+    header h1 {
+      font-size: clamp(1.4rem, 4vw, 2.4rem);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      line-height: 1.15;
+    }
+    header p {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+    }
+
+    .phase-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      padding: 16px;
+      background: var(--card);
+      border-bottom: 2px solid var(--border);
+    }
+    .phase-nav button {
+      padding: 6px 14px;
+      border: 2.5px solid var(--border);
+      border-radius: 999px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.15s, color 0.15s;
+    }
+    .phase-nav button:hover,
+    .phase-nav button.active {
+      background: var(--accent);
+      color: #1A0D00;
+      border-color: #1A0D00;
+    }
+
+    .stage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 32px 16px;
+      min-height: 380px;
+    }
+
+    .character-wrap {
+      position: relative;
+      width: min(280px, 80vw);
+    }
+
+    .character-wrap svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 6px 18px rgba(26,13,0,0.18));
+    }
+
+    /* === ANIMATIONS === */
+
+    /* Fastidio: subtle impatient sway */
+    #fase-fastidio { transform-origin: 90px 220px; }
+    .anim-fastidio #fase-fastidio {
+      animation: sway 1.2s ease-in-out infinite alternate;
+    }
+    @keyframes sway {
+      from { transform: rotate(-3deg) translateX(-4px); }
+      to   { transform: rotate(3deg)  translateX(4px); }
+    }
+
+    /* Presión: shake/tremble */
+    #fase-presion { transform-origin: 90px 200px; }
+    .anim-presion #fase-presion {
+      animation: shake 0.18s linear infinite;
+    }
+    @keyframes shake {
+      0%   { transform: translate(0,0) rotate(0); }
+      25%  { transform: translate(-3px, 1px) rotate(-1.5deg); }
+      50%  { transform: translate(3px, -1px) rotate(1.5deg); }
+      75%  { transform: translate(-2px, 2px) rotate(-1deg); }
+      100% { transform: translate(0,0) rotate(0); }
+    }
+
+    /* POP: pop-in scale */
+    #fase-pop { transform-origin: 90px 130px; }
+    .anim-pop #fase-pop {
+      animation: popIn 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards,
+                 float 2s ease-in-out 0.5s infinite alternate;
+    }
+    @keyframes popIn {
+      0%   { transform: scale(0.2) rotate(-15deg); opacity: 0; }
+      60%  { transform: scale(1.15) rotate(5deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    @keyframes float {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-8px); }
+    }
+
+    /* Sorpresa: jump + bounce */
+    #fase-sorpresa { transform-origin: 90px 200px; }
+    .anim-sorpresa #fase-sorpresa {
+      animation: jumpBounce 1.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+    }
+    @keyframes jumpBounce {
+      0%,100% { transform: translateY(0) scaleY(1) scaleX(1); }
+      20%     { transform: translateY(-22px) scaleY(1.05) scaleX(0.97); }
+      40%     { transform: translateY(0) scaleY(0.92) scaleX(1.06); }
+      55%     { transform: translateY(-8px) scaleY(1.02) scaleX(0.99); }
+      70%     { transform: translateY(0) scaleY(0.98) scaleX(1.01); }
+    }
+
+    /* Frente: idle breathe */
+    #fase-pochoclo-frente { transform-origin: 90px 180px; }
+    .anim-frente #fase-pochoclo-frente {
+      animation: breathe 2s ease-in-out infinite alternate;
+    }
+    @keyframes breathe {
+      from { transform: scaleY(1) scaleX(1); }
+      to   { transform: scaleY(1.03) scaleX(0.985); }
+    }
+
+    /* Al Ataque: run cycle */
+    #fase-al-ataque { transform-origin: 90px 180px; }
+    .anim-al-ataque #fase-al-ataque {
+      animation: runCycle 0.6s ease-in-out infinite alternate;
+    }
+    @keyframes runCycle {
+      from { transform: translateX(-5px) rotate(-4deg); }
+      to   { transform: translateX(5px)  rotate(4deg); }
+    }
+
+    /* === SEQUENCE mode: all six in a row === */
+    .grid-stage {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 12px;
+      padding: 24px 16px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .grid-cell {
+      background: var(--card);
+      border: 2.5px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 4px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+    .grid-cell:hover {
+      box-shadow: 0 4px 18px rgba(26,13,0,0.18);
+      transform: translateY(-3px);
+    }
+    .grid-cell svg { width: 100%; height: auto; }
+    .grid-cell span {
+      font-size: 0.65rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .info-bar {
+      text-align: center;
+      padding: 8px 16px 0;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-weight: 400;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 16px;
+      text-align: center;
+      border-top: 2px solid var(--border);
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Proyecto de Animación SVG<br><span style="color:var(--accent2)">Personaje Pochoclo</span></h1>
+  <p>Documentación Técnica y Recursos SVG · Estilo Retro Rubber Hose</p>
+</header>
+
+<nav class="phase-nav" id="phaseNav">
+  <button data-phase="fastidio" class="active">Fastidio</button>
+  <button data-phase="presion">Presión</button>
+  <button data-phase="pop">¡¡POP!!</button>
+  <button data-phase="sorpresa">Sorpresa</button>
+  <button data-phase="frente">Frente</button>
+  <button data-phase="al-ataque">¡Al Ataque!</button>
+  <button data-phase="sequence">Todos</button>
+</nav>
+
+<div id="mainStage">
+  <!-- Single character stage -->
+  <div class="stage" id="singleStage">
+    <div class="character-wrap" id="characterWrap">
+      <!-- SVG injected by JS -->
+    </div>
+  </div>
+  <p class="info-bar" id="infoBar">Clic en los botones para cambiar la pose</p>
+
+  <!-- Grid of all six -->
+  <div class="grid-stage" id="gridStage" style="display:none"></div>
+</div>
+
+<footer>
+  Paleta: #FCA311 · #E76F51 · #FFF7D6 · #FFFFFF · #822623 · #1A0D00 &nbsp;|&nbsp; SVG modular, listo para CSS / GSAP / SMIL
+</footer>
+
+<script>
+// ── SVG DEFS (shared) ──────────────────────────────────────────────────────
+const DEFS = `
+<defs>
+  <style>
+    .outline { fill: none; stroke: #1A0D00; stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+    .outline-thin { fill: none; stroke: #1A0D00; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    .body-grain   { fill: #FCA311; stroke: #1A0D00; stroke-width: 4.5; stroke-linejoin: round; }
+    .body-heat    { fill: #E76F51; stroke: #1A0D00; stroke-width: 4.5; stroke-linejoin: round; }
+    .body-popcorn { fill: #FFF7D6; stroke: #1A0D00; stroke-width: 4.5; stroke-linejoin: round; }
+    .pants-fill   { fill: #FFFFFF; stroke: #1A0D00; stroke-width: 4.5; stroke-linejoin: round; }
+    .shoe-fill    { fill: #822623; stroke: #1A0D00; stroke-width: 4.5; stroke-linejoin: round; }
+    .vapor        { fill: #FFFFFF; stroke: #1A0D00; stroke-width: 3.5; }
+    .solid        { fill: #1A0D00; }
+    .lbl          { font-family: "Arial Black", sans-serif; font-size: 16px; font-weight: 900;
+                    text-anchor: middle; fill: #1A0D00; letter-spacing: 1px; }
+  </style>
+  <g id="piernas-con-pants">
+    <path class="pants-fill" d="M 45 138 C 55 148, 125 148, 135 138 L 138 175 L 105 175 L 90 155 L 75 175 L 42 175 Z" />
+    <line class="outline" x1="60"  y1="175" x2="60"  y2="212" />
+    <line class="outline" x1="120" y1="175" x2="120" y2="212" />
+    <path class="shoe-fill" d="M 35 222 C 35 208, 72 208, 72 222 C 72 228, 35 228, 35 222 Z" />
+    <path class="shoe-fill" d="M 108 222 C 108 208, 145 208, 145 222 C 145 228, 108 228, 108 222 Z" />
+  </g>
+  <g id="piernas-pochoclo">
+    <line class="outline" x1="62"  y1="165" x2="62"  y2="212" />
+    <line class="outline" x1="118" y1="165" x2="118" y2="212" />
+    <path class="shoe-fill" d="M 35 222 C 35 208, 72 208, 72 222 C 72 228, 35 228, 35 222 Z" />
+    <path class="shoe-fill" d="M 108 222 C 108 208, 145 208, 145 222 C 145 228, 108 228, 108 222 Z" />
+  </g>
+</defs>`;
+
+// ── PHASE SVG BODIES ────────────────────────────────────────────────────────
+const PHASES = {
+  fastidio: {
+    label: 'FASTIDIO',
+    viewBox: '0 0 190 280',
+    body: `
+      <g id="fase-fastidio">
+        <path class="body-grain" d="M 45 40 C 55 25, 75 12, 90 20 C 105 12, 125 25, 135 40 C 150 60, 155 95, 145 130 C 135 152, 108 165, 90 165 C 72 165, 45 152, 35 130 C 25 95, 30 60, 45 40 Z" />
+        <path class="outline-thin" d="M 40 50 Q 45 45 40 40 M 132 50 Q 128 45 132 40" />
+        <use href="#piernas-con-pants" />
+        <path class="outline" d="M 50 72 L 72 78" />
+        <path class="outline" d="M 112 75 L 132 68" />
+        <path class="outline" d="M 56 86 L 70 88 M 115 88 L 128 84" />
+        <path class="outline" d="M 70 115 Q 92 125 115 110" />
+        <path class="outline" d="M 32 105 Q 85 122 135 105" />
+        <path class="outline" d="M 148 102 C 120 135, 60 135, 32 108" />
+        <circle class="pants-fill" cx="138" cy="104" r="8" />
+        <circle class="pants-fill" cx="32"  cy="105" r="8" />
+        <text x="90" y="268" class="lbl">FASTIDIO</text>
+      </g>`
+  },
+  presion: {
+    label: 'PRESIÓN',
+    viewBox: '0 0 190 280',
+    body: `
+      <g id="fase-presion">
+        <path class="body-heat" d="M 40 35 C 52 18, 75 8, 90 15 C 105 8, 128 18, 140 35 C 158 58, 162 98, 148 132 C 135 155, 108 168, 90 168 C 72 168, 45 155, 32 132 C 18 98, 22 58, 40 35 Z" />
+        <path class="outline-thin" d="M 15 60 C 10 70, 10 90, 15 100 M 165 60 C 170 70, 170 90, 165 100 M 20 130 Q 12 135 18 142" />
+        <use href="#piernas-con-pants" />
+        <path class="outline" d="M 48 55 L 75 72 M 132 55 L 105 72" />
+        <path class="outline" d="M 52 80 C 58 75, 68 75, 74 80 M 106 80 C 112 75, 122 75, 128 80" />
+        <path class="body-grain" d="M 70 115 Q 90 95 110 115 Q 90 130 70 115 Z" />
+        <line class="outline-thin" x1="72"  y1="112" x2="108" y2="112" />
+        <line class="outline-thin" x1="82"  y1="106" x2="82"  y2="124" />
+        <line class="outline-thin" x1="90"  y1="102" x2="90"  y2="127" />
+        <line class="outline-thin" x1="98"  y1="106" x2="98"  y2="124" />
+        <path class="outline" d="M 28 95 Q 12 65 38 40" />
+        <path class="outline" d="M 152 95 Q 168 65 142 40" />
+        <circle class="pants-fill" cx="40"  cy="38" r="10" />
+        <circle class="pants-fill" cx="140" cy="38" r="10" />
+        <path class="vapor" d="M 28 80 Q 20 85 24 90 Z" />
+        <path class="vapor" d="M 152 80 Q 160 85 156 90 Z" />
+        <text x="90" y="268" class="lbl">PRESIÓN</text>
+      </g>`
+  },
+  pop: {
+    label: '¡¡POP!!',
+    viewBox: '-40 -10 270 310',
+    body: `
+      <g id="fase-pop">
+        <path class="body-popcorn" d="M 60 30 C 42 25, 30 45, 42 62 C 28 72, 28 95, 45 105 C 32 122, 52 142, 75 135 C 88 152, 115 148, 122 130 C 138 130, 148 112, 135 95 C 150 82, 145 60, 128 55 C 128 38, 105 32, 92 45 C 80 25, 62 25, 60 30 Z" />
+        <path class="body-heat" d="M 15 45 L 8 25 L 30 22 Z" />
+        <path class="body-heat" d="M 5 110 L -12 105 L 0 128 Z" />
+        <path class="body-heat" d="M 150 40 L 172 22 L 155 18 Z" />
+        <path class="body-heat" d="M 148 112 L 168 128 L 155 140 Z" />
+        <path class="body-heat" d="M 95 152 L 100 172 L 82 165 Z" />
+        <circle class="solid" cx="68"  cy="78"  r="7" />
+        <circle class="solid" cx="112" cy="78"  r="7" />
+        <ellipse class="solid" cx="90" cy="112" rx="10" ry="15" />
+        <path class="outline" d="M 35 95 Q 5 98 10 70" />
+        <path class="outline" d="M 145 95 Q 175 98 175 120" />
+        <circle class="pants-fill" cx="10"  cy="68"  r="9" />
+        <circle class="pants-fill" cx="175" cy="122" r="9" />
+        <line class="outline" x1="55"  y1="135" x2="38"  y2="168" />
+        <line class="outline" x1="115" y1="135" x2="132" y2="168" />
+        <path class="shoe-fill" d="M 15 178 C 15 162, 45 162, 45 178 Z" transform="rotate(-20 30 178)" />
+        <path class="shoe-fill" d="M 125 178 C 125 162, 155 162, 155 178 Z" transform="rotate(20 140 178)" />
+        <line class="outline-thin" x1="90"  y1="12"  x2="90"  y2="-5" />
+        <line class="outline-thin" x1="30"  y1="18"  x2="15"  y2="2" />
+        <line class="outline-thin" x1="150" y1="18"  x2="165" y2="2" />
+        <line class="outline-thin" x1="-15" y1="78"  x2="-30" y2="78" />
+        <line class="outline-thin" x1="195" y1="78"  x2="210" y2="78" />
+        <path class="vapor" d="M -5 -5 C -12 -5, -18 8, -10 15 C -18 25, -2 30, 5 22 C 12 28, 20 18, 12 8 Z" />
+        <path class="vapor" d="M 175 -8 C 168 -18, 195 -18, 192 -2 C 205 2, 190 22, 178 12 Z" />
+        <text x="90" y="260" class="lbl">¡¡POP!!</text>
+      </g>`
+  },
+  sorpresa: {
+    label: 'SORPRESA',
+    viewBox: '-10 0 200 290',
+    body: `
+      <g id="fase-sorpresa">
+        <path class="body-popcorn" d="M 45 35 C 32 35, 22 52, 32 70 C 15 82, 18 112, 35 125 C 22 142, 45 162, 68 152 C 78 168, 110 168, 118 152 C 140 162, 162 142, 152 125 C 168 112, 168 82, 152 70 C 162 52, 142 35, 128 42 C 115 22, 80 18, 55 32 Z" />
+        <path class="outline-thin" d="M 48 55 Q 40 68 52 75 M 132 55 Q 140 68 128 75 M 58 125 Q 75 145 92 125 T 128 125" />
+        <use href="#piernas-pochoclo" />
+        <path class="outline" d="M 28 92 Q 10 115 35 132" />
+        <path class="outline" d="M 152 92 Q 170 115 145 132" />
+        <circle class="pants-fill" cx="35"  cy="132" r="8.5" />
+        <circle class="pants-fill" cx="145" cy="132" r="8.5" />
+        <path class="outline" d="M 58 52 Q 68 45 78 52" />
+        <path class="outline" d="M 102 52 Q 112 45 122 52" />
+        <ellipse class="solid" cx="68"  cy="72" rx="4.5" ry="7" />
+        <ellipse class="solid" cx="112" cy="72" rx="4.5" ry="7" />
+        <circle class="outline" cx="90" cy="98" r="8" />
+        <text x="90" y="278" class="lbl">SORPRESA</text>
+      </g>`
+  },
+  frente: {
+    label: 'FRENTE',
+    viewBox: '-10 0 200 290',
+    body: `
+      <g id="fase-pochoclo-frente">
+        <path class="body-popcorn" d="M 45 35 C 32 35, 22 52, 32 70 C 15 82, 18 112, 35 125 C 22 142, 45 162, 68 152 C 78 168, 110 168, 118 152 C 140 162, 162 142, 152 125 C 168 112, 168 82, 152 70 C 162 52, 142 35, 128 42 C 115 22, 80 18, 55 32 Z" />
+        <path class="outline-thin" d="M 48 55 Q 40 68 52 75 M 132 55 Q 140 68 128 75 M 58 125 Q 75 145 92 125 T 128 125" />
+        <use href="#piernas-pochoclo" />
+        <path class="outline" d="M 28 88 Q 5 112 32 128" />
+        <path class="outline" d="M 152 88 Q 175 112 148 128" />
+        <circle class="pants-fill" cx="32"  cy="128" r="8.5" />
+        <circle class="pants-fill" cx="148" cy="128" r="8.5" />
+        <path class="outline" d="M 55 48 Q 65 40 75 48" />
+        <path class="outline" d="M 105 48 Q 115 40 125 48" />
+        <ellipse class="solid" cx="65"  cy="68" rx="5.5" ry="7.5" />
+        <ellipse class="solid" cx="115" cy="68" rx="5.5" ry="7.5" />
+        <path class="outline" d="M 70 95 Q 90 122 110 95" />
+        <text x="90" y="278" class="lbl">FRENTE</text>
+      </g>`
+  },
+  'al-ataque': {
+    label: '¡AL ATAQUE!',
+    viewBox: '-40 0 270 310',
+    body: `
+      <g id="fase-al-ataque">
+        <g transform="rotate(10 90 95)">
+          <path class="body-popcorn" d="M 45 35 C 32 35, 22 52, 32 70 C 15 82, 18 112, 35 125 C 22 142, 45 162, 68 152 C 78 168, 110 168, 118 152 C 140 162, 162 142, 152 125 C 168 112, 168 82, 152 70 C 162 52, 142 35, 128 42 C 115 22, 80 18, 55 32 Z" />
+          <path class="outline-thin" d="M 48 55 Q 40 68 52 75 M 132 55 Q 140 68 128 75 M 58 125 Q 75 145 92 125 T 128 125" />
+        </g>
+        <path class="outline" d="M 52 155 Q 22 178 35 208" />
+        <path class="outline" d="M 115 155 Q 140 185 105 210" />
+        <path class="shoe-fill" d="M 18 215 C 18 200, 48 200, 48 215 Z" transform="rotate(-20 30 215)" />
+        <path class="shoe-fill" d="M 90 220 C 90 205, 120 205, 120 220 Z" transform="rotate(20 105 220)" />
+        <path class="outline" d="M 28 88 Q -5 95 10 120" />
+        <path class="outline" d="M 152 92 Q 175 62 155 38" />
+        <circle class="pants-fill" cx="10"  cy="120" r="8.5" />
+        <circle class="pants-fill" cx="155" cy="38"  r="9.5" />
+        <path class="outline" d="M 50 45 L 72 52" />
+        <path class="outline" d="M 130 45 L 108 52" />
+        <ellipse class="solid" cx="62"  cy="65" rx="5" ry="7" />
+        <ellipse class="solid" cx="112" cy="65" rx="5" ry="7" />
+        <path class="outline" d="M 70 90 Q 88 108 102 88" />
+        <line class="outline-thin" x1="-15" y1="145" x2="-32" y2="145" />
+        <line class="outline-thin" x1="-5"  y1="162" x2="-22" y2="162" />
+        <text x="90" y="288" class="lbl">¡AL ATAQUE!</text>
+      </g>`
+  }
+};
+
+const PHASE_KEYS = ['fastidio', 'presion', 'pop', 'sorpresa', 'frente', 'al-ataque'];
+
+function buildSVG(key, includeLabel = true) {
+  const p = PHASES[key];
+  const body = includeLabel ? p.body : p.body.replace(/<text[^>]*>.*?<\/text>/s, '');
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${p.viewBox}" width="100%" height="100%">${DEFS}${body}</svg>`;
+}
+
+// ── STATE ───────────────────────────────────────────────────────────────────
+let current = 'fastidio';
+
+const wrap   = document.getElementById('characterWrap');
+const info   = document.getElementById('infoBar');
+const single = document.getElementById('singleStage');
+const grid   = document.getElementById('gridStage');
+const nav    = document.getElementById('phaseNav');
+
+function setPhase(key) {
+  if (key === 'sequence') {
+    single.style.display = 'none';
+    grid.style.display   = 'grid';
+    info.textContent = 'Clic en cada personaje para verlo en tamaño completo';
+    document.body.className = '';
+    return;
+  }
+  single.style.display = 'flex';
+  grid.style.display   = 'none';
+  current = key;
+  wrap.innerHTML = buildSVG(key);
+  document.body.className = `anim-${key}`;
+  info.textContent = `Pose: ${PHASES[key].label}`;
+}
+
+// Build grid
+PHASE_KEYS.forEach(key => {
+  const cell = document.createElement('div');
+  cell.className = 'grid-cell';
+  cell.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${PHASES[key].viewBox}">${DEFS}${PHASES[key].body}</svg><span>${PHASES[key].label}</span>`;
+  cell.addEventListener('click', () => {
+    nav.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    nav.querySelector(`[data-phase="${key}"]`).classList.add('active');
+    setPhase(key);
+  });
+  grid.appendChild(cell);
+});
+
+// Nav buttons
+nav.querySelectorAll('button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    nav.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    setPhase(btn.dataset.phase);
+  });
+});
+
+// Init
+setPhase('fastidio');
+</script>
+</body>
+</html>
